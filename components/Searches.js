@@ -5,9 +5,19 @@ import Card from "./Card";
 const Searches = () => {
   const mockData = ["Mexico", "Amsterdam", "London", "Nigeria"];
 
-  const [data, setData] = useState({});
+  const [data, setData] = useState([
+    {
+      name: { common: "" },
+      flags: { png: "" },
+      capital: [""],
+      population: 0,
+      region: "",
+    },
+  ]);
   useEffect(() => {
-    fetch("https://restcountries.com/v3.1/all")
+    fetch(
+      "https://restcountries.com/v3.1/all?fields=name,flags,capital,region,population"
+    )
       .then((response) => response.json())
       .then((data) => setData(data));
   }, []);
@@ -51,11 +61,21 @@ const Searches = () => {
       <div
         style={{
           display: "flex",
+          flexWrap: "wrap",
           justifyContent: "space-between",
         }}
       >
-        {mockData.map((country) => {
-          return <Card key={country} />;
+        {data.map((country) => {
+          return (
+            <Card
+              key={country.name.common}
+              name={country.name.common}
+              population={country.population}
+              region={country.region}
+              capital={country.capital[0]}
+              flag={country.flags.png}
+            />
+          );
         })}
       </div>
     </div>
