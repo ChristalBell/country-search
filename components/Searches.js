@@ -3,8 +3,6 @@ import React, { useEffect, useState } from "react";
 import Card from "./Card";
 
 const Searches = () => {
-  const mockData = ["Mexico", "Amsterdam", "London", "Nigeria"];
-
   const [data, setData] = useState([
     {
       name: { common: "" },
@@ -14,15 +12,47 @@ const Searches = () => {
       region: "",
     },
   ]);
+
+  const [region, setRegion] = React.useState("");
+  const [searchValue, setSearchValue] = useState("");
+  const [filteredCountries, setFilteredCountries] = useState(data);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  const handleChange = (event) => {
+    setRegion(event.target.value);
+  };
+
+  const filterCountries = (event) => {
+    setFilteredCountries(
+      data.filter((country) =>
+        country.name.common
+          .toLowerCase()
+          .includes(event.target.value.toLowerCase())
+      )
+    );
+
+    // setSearchValue(e.target.value);
+  };
+
   useEffect(() => {
     fetch(
       "https://restcountries.com/v3.1/all?fields=name,flags,capital,region,population"
     )
       .then((response) => response.json())
-      .then((data) => setData(data));
+      .then((data) => {
+        setData(data);
+        setFilteredCountries(data);
+        setIsLoading(false);
+      });
   }, []);
 
   console.log(data);
+
+  if (isLoading) {
+    return <div> Loading .. </div>;
+  }
+
   return (
     <div>
       <div
@@ -37,6 +67,7 @@ const Searches = () => {
           type="text"
           name="country search"
           placeholder="Search by Country"
+          onChange={(e) => filterCountries(e)}
           style={{
             color: "grey",
             height: "2rem",
@@ -45,9 +76,11 @@ const Searches = () => {
         />
 
         <select
+          value={region}
           name="filter by region"
           id="region"
           placeholder="Filter by Region"
+          onChange={handleChange}
         >
           <option value={"All"}>All</option>
           <option value={"Africa"}>Africa</option>
@@ -65,7 +98,7 @@ const Searches = () => {
           justifyContent: "space-between",
         }}
       >
-        {data.map((country) => {
+        {filteredCountries.map((country) => {
           return (
             <Card
               key={country.name.common}

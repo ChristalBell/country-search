@@ -5,17 +5,23 @@ const Card = ({ name, population, region, flag, capital }) => {
     <div
       className="country-cards"
       style={{
-        backgroundColor: "white",
+        backgroundColor: "#fefefc",
         boxShadow: "0 .5rem 5px lightgrey",
         marginBottom: "1rem",
         width: "25vw",
       }}
     >
       <div>
-        <article className="country">
+        <article
+          className="country"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           <img src={flag} alt="country flag" style={{ width: "25vw" }} />
-          <h2>Country Name{name}</h2>
-          <p>Population:{population} </p>
+          <h2>{name}</h2>
+          <p>Population: {population} </p>
           <p>Region: {region}</p>
           <p>Capital: {capital}</p>
         </article>
