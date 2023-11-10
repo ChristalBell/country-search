@@ -23,17 +23,40 @@ const Searches = () => {
     setRegion(event.target.value);
   };
 
-  const filterCountries = (event) => {
-    setFilteredCountries(
-      data.filter((country) =>
-        country.name.common
-          .toLowerCase()
-          .includes(event.target.value.toLowerCase())
-      )
-    );
-
-    // setSearchValue(e.target.value);
+  const handleTyping = (event) => {
+    setSearchValue(event.target.value);
   };
+
+  useMemo(() => {
+    let countries = [];
+    if (region !== "") {
+      countries = data.filter((country) => country.region === region);
+
+      if (searchValue !== "") {
+        setFilteredCountries(
+          countries.filter((country) =>
+            country.name.common
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())
+          )
+        );
+      } else {
+        setFilteredCountries(countries);
+      }
+    } else if (region === "") {
+      if (searchValue !== "") {
+        setFilteredCountries(
+          data.filter((country) =>
+            country.name.common
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())
+          )
+        );
+      } else {
+        setFilteredCountries(data);
+      }
+    }
+  }, [data, region, searchValue]);
 
   useEffect(() => {
     fetch(
@@ -67,7 +90,7 @@ const Searches = () => {
           type="text"
           name="country search"
           placeholder="Search by Country"
-          onChange={(e) => filterCountries(e)}
+          onChange={(e) => handleTyping(e)}
           style={{
             color: "grey",
             height: "2rem",
@@ -82,7 +105,7 @@ const Searches = () => {
           placeholder="Filter by Region"
           onChange={handleChange}
         >
-          <option value={"All"}>All</option>
+          <option value={""}>All</option>
           <option value={"Africa"}>Africa</option>
           <option value={"Americas"}>Americas</option>
           <option value={"Asia"}>Asia</option>
