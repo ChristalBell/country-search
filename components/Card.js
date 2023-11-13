@@ -1,4 +1,6 @@
 import React from "react";
+import CardFullDetail from "./CardFullDetail";
+import Link from "next/link";
 
 const Card = ({ name, population, region, flag, capital }) => {
   return (
@@ -11,20 +13,30 @@ const Card = ({ name, population, region, flag, capital }) => {
         width: "25vw",
       }}
     >
-      <div>
-        <article
-          className="country"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-          }}
-        >
-          <img src={flag} alt="country flag" style={{ width: "25vw" }} />
-          <h2>{name}</h2>
-          <p>Population: {population} </p>
-          <p>Region: {region}</p>
-          <p>Capital: {capital}</p>
-        </article>
+      <div
+        style={{
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+        }}
+      >
+        <div>
+          <article
+            className="country"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <img src={flag} alt="country flag" style={{ width: "25vw" }} />
+            <h2>
+              <Link href="/details/page"> {name}</Link>
+            </h2>
+            <p>Population: {population} </p>
+            <p>Region: {region}</p>
+            <p>Capital: {capital}</p>
+          </article>
+        </div>
       </div>
     </div>
   );

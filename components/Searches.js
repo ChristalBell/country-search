@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import Card from "./Card";
 
 const Searches = () => {
@@ -60,7 +60,7 @@ const Searches = () => {
 
   useEffect(() => {
     fetch(
-      "https://restcountries.com/v3.1/all?fields=name,flags,capital,region,population"
+      "https://restcountries.com/v3.1/all?fields=name,flags,capital,region,population,nativeName,subregion,currencies,languages,"
     )
       .then((response) => response.json())
       .then((data) => {
